@@ -21,12 +21,19 @@ export const App = () => {
     const tasks = useTracker(() => TasksCollection.find(hideCompleted ? hideCompletedFilter : {},
         { sort: { createdAt: -1 } }).fetch());
 
+    const pendingTasksCount = useTracker(() =>
+        TasksCollection.find(hideCompletedFilter).count()
+    );
+    const pendingTasksTitle = `${
+        pendingTasksCount ? ` (${pendingTasksCount} pending)` : ''
+    }`;
+
     return (
         <div className="app">
             <header>
                 <div className="app-bar">
                     <div className="app-header">
-                        <h1>VitaGroup meteor sample</h1>
+                        <h1>VitaGroup meteor sample {pendingTasksTitle}</h1>
                     </div>
                 </div>
             </header>
@@ -54,4 +61,3 @@ export const App = () => {
         </div>
     );
 };
-
